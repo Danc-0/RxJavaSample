@@ -1,4 +1,4 @@
-package com.danc.rxjavasample;
+package com.danc.rxjavasample.model;
 
 public class GitHubRepo {
 

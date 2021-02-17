@@ -1,7 +1,10 @@
-package com.danc.rxjavasample;
+package com.danc.rxjavasample.viewholder;
 
 import android.view.View;
 import android.widget.TextView;
+
+import com.danc.rxjavasample.R;
+import com.danc.rxjavasample.model.GitHubRepo;
 
 public class GitHubRepoViewHolder {
 

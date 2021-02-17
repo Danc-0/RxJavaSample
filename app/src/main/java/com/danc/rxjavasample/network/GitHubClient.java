@@ -1,7 +1,8 @@
-package com.danc.rxjavasample;
+package com.danc.rxjavasample.network;
 
 import androidx.annotation.NonNull;
 
+import com.danc.rxjavasample.model.GitHubRepo;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,7 +34,9 @@ public class GitHubClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
         gitHubService = retrofit.create(GitHubService.class);
+
     }
 
     public static GitHubClient getInstance() {

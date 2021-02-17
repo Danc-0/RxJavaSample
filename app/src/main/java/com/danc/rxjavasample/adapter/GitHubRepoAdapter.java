@@ -1,4 +1,4 @@
-package com.danc.rxjavasample;
+package com.danc.rxjavasample.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,20 +8,23 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.danc.rxjavasample.R;
+import com.danc.rxjavasample.model.GitHubRepo;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.schedulers.Schedulers;
 
 public class GitHubRepoAdapter extends BaseAdapter {
 
     private List<GitHubRepo> gitHubRepos = new ArrayList<>();
 
-    @Override public int getCount() {
+    @Override
+    public int getCount() {
         return gitHubRepos.size();
     }
 
-    @Override public GitHubRepo getItem(int position) {
+    @Override
+    public GitHubRepo getItem(int position) {
         if (position < 0 || position >= gitHubRepos.size()) {
             return null;
         } else {
@@ -29,11 +32,13 @@ public class GitHubRepoAdapter extends BaseAdapter {
         }
     }
 
-    @Override public long getItemId(int position) {
+    @Override
+    public long getItemId(int position) {
         return position;
     }
 
-    @Override public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
         final View view = (convertView != null ? convertView : createView(parent));
         final GitHubRepoViewHolder viewHolder = (GitHubRepoViewHolder) view.getTag();
         viewHolder.setGitHubRepo(getItem(position));

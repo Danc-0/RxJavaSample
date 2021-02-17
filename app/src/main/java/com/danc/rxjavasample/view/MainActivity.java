@@ -1,4 +1,4 @@
-package com.danc.rxjavasample;
+package com.danc.rxjavasample.view;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +9,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.danc.rxjavasample.R;
+import com.danc.rxjavasample.adapter.GitHubRepoAdapter;
+import com.danc.rxjavasample.model.GitHubRepo;
+import com.danc.rxjavasample.network.GitHubClient;
 
 import java.util.List;
 
@@ -31,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.list_view_repos);
         listView.setAdapter(adapter);
 
-        final EditText editTextUsername = (EditText) findViewById(R.id.edit_text_username);
-        final Button buttonSearch = (Button) findViewById(R.id.button_search);
+        final EditText editTextUsername = findViewById(R.id.edit_text_username);
+        final Button buttonSearch = findViewById(R.id.button_search);
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
