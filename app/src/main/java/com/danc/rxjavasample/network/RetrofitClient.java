@@ -1,6 +1,6 @@
 package com.danc.rxjavasample.network;
 
-import com.danc.rxjavasample.model.Players.Data;
+import com.danc.rxjavasample.model.Players.DataX;
 import com.danc.rxjavasample.model.Players.PlayersModel;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -46,7 +46,7 @@ public class RetrofitClient {
          return instance;
      }
 
-     Observable<List<Data>> getAllPlayers(){
+     public Observable<PlayersModel> getAllPlayers(){
          return retrofitService.getAllPlayers();
      }
 }

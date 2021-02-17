@@ -1,6 +1,6 @@
 package com.danc.rxjavasample.network;
 
-import com.danc.rxjavasample.model.Players.Data;
+import com.danc.rxjavasample.model.Players.DataX;
 import com.danc.rxjavasample.model.Players.PlayersModel;
 
 import java.util.List;
@@ -11,6 +11,6 @@ import rx.Observable;
 public interface RetrofitService {
 
     @GET("api/v1/players")
-    Observable<List<Data>> getAllPlayers();
+    Observable<PlayersModel> getAllPlayers();
 
 }

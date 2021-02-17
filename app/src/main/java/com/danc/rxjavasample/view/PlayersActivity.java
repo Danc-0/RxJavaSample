@@ -2,26 +2,17 @@ package com.danc.rxjavasample.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.danc.rxjavasample.R;
-import com.danc.rxjavasample.adapter.GitHubRepoAdapter;
 import com.danc.rxjavasample.adapter.PlayersAdapter;
 import com.danc.rxjavasample.databinding.ActivityPlayersBinding;
-import com.danc.rxjavasample.model.GitHubRepo;
-import com.danc.rxjavasample.model.Players.Data;
+import com.danc.rxjavasample.model.Players.DataX;
 import com.danc.rxjavasample.model.Players.PlayersModel;
-import com.danc.rxjavasample.network.GitHubClient;
 import com.danc.rxjavasample.network.RetrofitClient;
 
 import java.util.List;
@@ -34,27 +25,36 @@ import rx.schedulers.Schedulers;
 public class PlayersActivity extends AppCompatActivity {
 
     private static final String TAG = PlayersActivity.class.getSimpleName();
-    public PlayersAdapter adapter;
+    public PlayersAdapter adapter = new PlayersAdapter();
     private Subscription subscription;
     ActivityPlayersBinding binding;
-    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityPlayersBinding.inflate(LayoutInflater.from(context));
+        binding = ActivityPlayersBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        binding.recylerview.setLayoutManager(manager);
-
+        binding.rvPlayers.setLayoutManager(manager);
+        binding.rvPlayers.setAdapter(adapter);
         getPlayers();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (subscription != null && !subscription.isUnsubscribed()){
+            subscription.unsubscribe();
+        }
+        super.onDestroy();
     }
 
     public void getPlayers(){
         subscription = RetrofitClient.getInstance()
-                .retrofitService.getAllPlayers()
+                .getAllPlayers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Data>>() {
+                .subscribe(new Observer<PlayersModel>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted: Load is Completed");
@@ -62,13 +62,14 @@ public class PlayersActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d(TAG, "In onError(): " + e.getMessage());
                     }
 
                     @Override
-                    public void onNext(List<Data> playersModels) {
-                        adapter = new PlayersAdapter(context, playersModels);
-                        binding.recylerview.setAdapter(adapter);
+                    public void onNext(PlayersModel playersModels) {
+                        List<DataX> dataX = playersModels.getData();
+                        adapter.setGitHubRepos(dataX);
+
                     }
                 });
     }

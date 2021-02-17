@@ -1,6 +1,6 @@
 package com.danc.rxjavasample.model.Players
 
-data class Data(
+data class DataX(
     val first_name: String,
     val height_feet: Any,
     val height_inches: Any,

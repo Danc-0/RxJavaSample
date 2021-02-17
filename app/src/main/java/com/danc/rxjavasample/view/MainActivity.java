@@ -65,18 +65,18 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Observer<List<GitHubRepo>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "In onCompleted()");
+                        Log.d(TAG, "InOnCompleted()");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Log.d(TAG, "In onError()");
+                        Log.d(TAG, "InOnError()");
                     }
 
                     @Override
                     public void onNext(List<GitHubRepo> gitHubRepos) {
-                        Log.d(TAG, "In onNext()");
+                        Log.d(TAG, "InOnNext()");
                         adapter.setGitHubRepos(gitHubRepos);
                     }
                 });

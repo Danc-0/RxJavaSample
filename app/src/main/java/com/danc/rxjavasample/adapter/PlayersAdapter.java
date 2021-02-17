@@ -2,27 +2,33 @@ package com.danc.rxjavasample.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.danc.rxjavasample.databinding.ListPlayersBinding;
-import com.danc.rxjavasample.model.Players.Data;
-import com.danc.rxjavasample.model.Players.PlayersModel;
+import com.danc.rxjavasample.model.GitHubRepo;
+import com.danc.rxjavasample.model.Players.DataX;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersViewHolder> {
 
-    Context context;
-    List<Data> playersModelList;
+    private List<DataX> playersModelList = new ArrayList<>();
 
-    public PlayersAdapter(Context context, List<Data> playersModels){
-        this.context = context;
-        this.playersModelList = playersModels;
+    public PlayersAdapter(){
+    }
+
+    public void setGitHubRepos(@Nullable List<DataX> repos) {
+        if (repos == null) {
+            return;
+        }
+        playersModelList.clear();
+        playersModelList.addAll(repos);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -34,8 +40,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
 
     @Override
     public void onBindViewHolder(@NonNull PlayersViewHolder holder, int position) {
-        Data data = playersModelList.get(position);
-        holder.bind(data);
+        DataX dataX = playersModelList.get(position);
+        holder.bind(dataX);
     }
 
     @Override
@@ -51,10 +57,10 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
             this.binding = binding;
         }
 
-        public void bind(Data data){
-            binding.fName.setText(data.getFirst_name());
-            binding.lName.setText(data.getLast_name());
-            binding.tName.setText(String.format("Team: %s", data.getTeam().getName()));
+        public void bind(DataX dataX){
+            binding.fName.setText(dataX.getFirst_name());
+            binding.lName.setText(dataX.getLast_name());
+            binding.tName.setText(String.format("Team: %s", dataX.getTeam().getFull_name()));
         }
     }
 }
