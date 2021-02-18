@@ -1,6 +1,5 @@
 package com.danc.rxjavasample.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,20 +8,19 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.danc.rxjavasample.databinding.ListPlayersBinding;
-import com.danc.rxjavasample.model.GitHubRepo;
-import com.danc.rxjavasample.model.Players.DataX;
+import com.danc.rxjavasample.model.Players.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersViewHolder> {
 
-    private List<DataX> playersModelList = new ArrayList<>();
+    private List<Data> playersModelList = new ArrayList<>();
 
     public PlayersAdapter(){
     }
 
-    public void setGitHubRepos(@Nullable List<DataX> repos) {
+    public void setPlayersData(@Nullable List<Data> repos) {
         if (repos == null) {
             return;
         }
@@ -40,8 +38,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
 
     @Override
     public void onBindViewHolder(@NonNull PlayersViewHolder holder, int position) {
-        DataX dataX = playersModelList.get(position);
-        holder.bind(dataX);
+        Data data = playersModelList.get(position);
+        holder.bind(data);
     }
 
     @Override
@@ -57,10 +55,10 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
             this.binding = binding;
         }
 
-        public void bind(DataX dataX){
-            binding.fName.setText(dataX.getFirst_name());
-            binding.lName.setText(dataX.getLast_name());
-            binding.tName.setText(String.format("Team: %s", dataX.getTeam().getFull_name()));
+        public void bind(Data data){
+            binding.fName.setText(data.getFirst_name());
+            binding.lName.setText(data.getLast_name());
+            binding.tName.setText(String.format("Team: %s", data.getTeam().getFull_name()));
         }
     }
 }

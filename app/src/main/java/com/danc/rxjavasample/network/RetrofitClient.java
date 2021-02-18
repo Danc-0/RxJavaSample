@@ -1,12 +1,10 @@
 package com.danc.rxjavasample.network;
 
-import com.danc.rxjavasample.model.Players.DataX;
 import com.danc.rxjavasample.model.Players.PlayersModel;
+import com.danc.rxjavasample.model.Teams.TeamsModel;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -49,4 +47,8 @@ public class RetrofitClient {
      public Observable<PlayersModel> getAllPlayers(){
          return retrofitService.getAllPlayers();
      }
+
+    public Observable<TeamsModel> getAllTeams(){
+        return retrofitService.getAllTeams();
+    }
 }

@@ -16,6 +16,7 @@ import com.danc.rxjavasample.model.GitHubRepo;
 import com.danc.rxjavasample.network.GitHubClient;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import rx.Observer;
 import rx.Subscription;

@@ -13,13 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RxJavaSample">
 
-        <activity android:name=".view.MainScreen" >
+
+        <activity android:name=".view.TeamsActivity" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+
+        <activity android:name=".view.MainPagingActivity">
+
+        </activity>
+        <activity android:name=".view.MainScreen" >
 
         </activity>
         <activity android:name=".view.PlayersActivity" >
