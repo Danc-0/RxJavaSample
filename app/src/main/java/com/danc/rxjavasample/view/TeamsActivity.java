@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,10 +18,10 @@ import com.danc.rxjavasample.model.Players.PlayersModel;
 import com.danc.rxjavasample.model.Teams.Data;
 import com.danc.rxjavasample.model.Teams.TeamsModel;
 import com.danc.rxjavasample.network.RetrofitClient;
+import com.danc.rxjavasample.viewmodel.PlayersViewModel;
 
 import java.util.List;
 
-import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,9 +30,11 @@ import rx.schedulers.Schedulers;
 public class TeamsActivity extends AppCompatActivity {
 
     private static final String TAG = TeamsActivity.class.getSimpleName();
-    public TeamsAdapter adapter = new TeamsAdapter();;
+    public TeamsAdapter adapter = new TeamsAdapter();
     private Subscription subscription;
     ActivityTeamsBinding binding;
+
+    private PlayersViewModel playersViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,9 @@ public class TeamsActivity extends AppCompatActivity {
         binding.rvTeams.setLayoutManager(manager);
         binding.rvTeams.setItemAnimator(new DefaultItemAnimator());
         binding.rvTeams.setAdapter(adapter);
+
+        playersViewModel = new ViewModelProvider(this).get(PlayersViewModel.class);
+
         getAllTeams();
     }
 
@@ -53,36 +60,17 @@ public class TeamsActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void getAllTeams(){
-        subscription = RetrofitClient.getInstance()
-                .getAllTeams()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TeamsModel>() {
-                    @Override
-                    public void onCompleted() {
+    private void getAllTeams() {
+        playersViewModel.getTeamsListObserver().observe(this, new Observer<List<Data>>() {
+            @Override
+            public void onChanged(List<Data> data) {
+                if (data != null){
+                    adapter.setData(data);
+                }
+            }
+        });
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(TeamsModel teamsModel) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                List<Data> dataList = teamsModel.getData();
-                                adapter.setData(dataList);
-                            }
-                        });
-
-
-                    }
-                });
+        playersViewModel.getAllTeams();
     }
-
 
 }

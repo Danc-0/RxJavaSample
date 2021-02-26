@@ -8,6 +8,9 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Predicate;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,10 +27,10 @@ import com.danc.rxjavasample.model.Movie;
 import com.danc.rxjavasample.model.Players.Data;
 import com.danc.rxjavasample.model.Players.PlayersModel;
 import com.danc.rxjavasample.network.RetrofitClient;
+import com.danc.rxjavasample.viewmodel.PlayersViewModel;
 
 import java.util.List;
 
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -38,6 +41,7 @@ public class PlayersActivity extends AppCompatActivity {
     public PlayersAdapter adapter = new PlayersAdapter();
     private Subscription subscription;
     ActivityPlayersBinding binding;
+    private PlayersViewModel playersViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class PlayersActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.rvPlayers.setLayoutManager(manager);
         binding.rvPlayers.setAdapter(adapter);
+
+        playersViewModel = new ViewModelProvider(this).get(PlayersViewModel.class);
         getPlayers();
     }
 
@@ -60,27 +66,15 @@ public class PlayersActivity extends AppCompatActivity {
     }
 
     public void getPlayers() {
-        subscription = RetrofitClient.getInstance()
-                .getAllPlayers()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<PlayersModel>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted: Load is Completed");
-                    }
+        playersViewModel.getPlayersListObserver().observe(this, new Observer<List<Data>>() {
+            @Override
+            public void onChanged(List<Data> data) {
+                if (data != null){
+                    adapter.setPlayersData(data);
+                }
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "In onError(): " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(PlayersModel playersModels) {
-                        List<Data> dataX = playersModels.getData();
-                        adapter.setPlayersData(dataX);
-
-                    }
-                });
+        playersViewModel.getPlayers();
     }
 }

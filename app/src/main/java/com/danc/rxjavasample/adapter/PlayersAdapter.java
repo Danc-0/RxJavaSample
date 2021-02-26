@@ -44,7 +44,10 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
 
     @Override
     public int getItemCount() {
-        return playersModelList.size();
+        if (this.playersModelList != null){
+            return this.playersModelList.size();
+        }
+        return 0;
     }
 
     public class PlayersViewHolder extends RecyclerView.ViewHolder {

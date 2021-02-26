@@ -18,7 +18,7 @@ public class RetrofitClient {
      private static RetrofitClient instance;
      public RetrofitService retrofitService;
 
-     public String PLAYERS_BASE_URL = "https://www.balldontlie.io/";
+     public static final String PLAYERS_BASE_URL = "https://www.balldontlie.io/";
 
      private RetrofitClient(){
          final Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
